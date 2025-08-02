@@ -1,7 +1,7 @@
 name: flutter_pay_buttons
 description:  A Flutter plugin to add Apple Pay support via the pay package, with a custom ApplePayButton widget.
 version: 0.0.1
-homepage: 
+homepage: https://github.com/M-Tayyab-Mustafa/flutter_pay_buttons/blob/main/lib/flutter_pay_buttons.dart
 
 environment:
   sdk: ">=3.8.1 <4.0.0"
