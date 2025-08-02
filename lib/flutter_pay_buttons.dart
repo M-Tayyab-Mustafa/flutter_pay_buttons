@@ -41,4 +41,4 @@ import 'package:pay/pay.dart';
 export 'package:pay/pay.dart' hide ApplePayButton;
 
 // Link to the internal implementation of ApplePayButton
-part 'src/pay.dart';
+part 'src/apple_pay.dart';

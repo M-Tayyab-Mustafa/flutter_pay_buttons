@@ -12,7 +12,7 @@
 /// See the License for the specific language governing permissions and
 /// limitations under the License.
 
-part of '../apple_pay.dart';
+part of '../flutter_pay_buttons.dart';
 
 /// This getter provides an SVG image of the Apple logo as raw byte data.
 ///
@@ -50,14 +50,14 @@ Uint8List get _appleLogoSvgBytes => Uint8List.fromList(
 /// - Returns the result of the transaction (such as success, failure, or cancellation)
 ///
 /// ### Parameters:
-/// - `PayProvider.apple_pay`: Tells the plugin to use Apple Pay as the payment method.
+/// - `PayProvider.flutter_pay_buttons`: Tells the plugin to use Apple Pay as the payment method.
 /// - `widget.paymentItems`: A list of items showing what the user is paying for
 ///   (e.g., product names, totals).
 ///
 /// ### Example of what's happening:
 /// ```dart
 /// final result = await _pay.showPaymentSelector(
-///   PayProvider.apple_pay,
+///   PayProvider.flutter_pay_buttons,
 ///   [
 ///     PaymentItem(label: 'Total', amount: '49.99'),
 ///   ],
@@ -126,7 +126,7 @@ class _ApplePayButtonState extends State<ApplePayButton> {
   Map<PayProvider, PaymentConfiguration> get _configurations => {
     PayProvider.apple_pay: PaymentConfiguration.fromJsonString(
       jsonEncode({
-        "provider": "apple_pay",
+        "provider": "flutter_pay_buttons",
         "data": {
           "merchantIdentifier": widget.merchantId,
           "displayName": widget.merchantName,

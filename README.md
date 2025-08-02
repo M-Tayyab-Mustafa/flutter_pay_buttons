@@ -22,7 +22,7 @@ Add the dependency in your `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  apple_pay:
+  flutter_pay_buttons:
     git:
-      url: https://github.com/M-Tayyab-Mustafa/apple_pay
+      url: https://github.com/M-Tayyab-Mustafa/flutter_pay_buttons
 ```

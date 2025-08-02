@@ -18,7 +18,7 @@ library;
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:apple_pay/apple_pay.dart';
+import 'package:flutter_pay_buttons/flutter_pay_buttons.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
