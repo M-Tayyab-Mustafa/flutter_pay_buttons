@@ -24,4 +24,5 @@ Add the dependency in your `pubspec.yaml`:
 dependencies:
   apple_pay:
     git:
-      url: 
+      url: https://github.com/M-Tayyab-Mustafa/apple_pay
+```
