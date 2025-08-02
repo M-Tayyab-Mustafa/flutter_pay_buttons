@@ -1,39 +1,27 @@
-<!--
-This README describes the package. If you publish this package to pub.dev,
-this README's contents appear on the landing page for your package.
+# Apple Pay Flutter Plugin
 
-For information about how to write a good package README, see the guide for
-[writing package pages](https://dart.dev/tools/pub/writing-package-pages).
-
-For general information about developing packages, see the Dart guide for
-[creating packages](https://dart.dev/guides/libraries/create-packages)
-and the Flutter guide for
-[developing packages and plugins](https://flutter.dev/to/develop-packages).
--->
-
-TODO: Put a short description of the package here that helps potential users
-know whether this package might be useful for them.
+A Flutter plugin that adds Apple Pay support using the [`pay`](https://pub.dev/packages/pay) package under the hood. This plugin provides a customizable Apple Pay button and simplifies the integration process.
 
 ## Features
 
-TODO: List what your package can do. Maybe include images, gifs, or videos.
+- Custom Apple Pay button with styling options
+- Uses the reliable `pay` package for handling payment requests
+- Easy to integrate in your existing Flutter app
 
-## Getting started
+## Getting Started
 
-TODO: List prerequisites and provide or point to information on how to
-start using the package.
+Before you begin, ensure the following:
 
-## Usage
+- You're developing on a macOS system (Apple Pay is only available on iOS/macOS).
+- Your app has the necessary entitlements and configuration for Apple Pay.
+- You’ve set up Apple Merchant ID and certificates in your Apple Developer account.
 
-TODO: Include short and useful examples for package users. Add longer examples
-to `/example` folder.
+## Installation
 
-```dart
-const like = 'sample';
-```
+Add the dependency in your `pubspec.yaml`:
 
-## Additional information
-
-TODO: Tell users more about the package: where to find more information, how to
-contribute to the package, how to file issues, what response they can expect
-from the package authors, and more.
+```yaml
+dependencies:
+  apple_pay:
+    git:
+      url: 

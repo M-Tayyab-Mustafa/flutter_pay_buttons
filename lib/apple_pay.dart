@@ -1,16 +1,16 @@
 /// ---------------------------------------------------------------------------
-/// pay_button library
+/// Apple Pay Flutter Plugin
 /// ---------------------------------------------------------------------------
 /// A Flutter library that provides a customizable Apple Pay button widget,
-/// built on top of the `pay` package to handle Apple Pay integrations.
+/// built on top of the `pay` package to simplify Apple Pay integrations.
 ///
-/// Exports:
-/// - All `pay` package features (except `ApplePayButton`)
-/// - Includes a `part` for internal widget implementation.
+/// Features:
+/// - Exports most of the `pay` package functionality (except the built-in ApplePayButton)
+/// - Adds a custom ApplePayButton with extended UI customization
 ///
-/// Author: Your Name or Company Name
-/// License: MIT / Apache / Proprietary (choose one if needed)
-/// Copyright © 2025 Your Name. All rights reserved.
+/// Author: [Your Name or Company]
+/// License: MIT
+/// Copyright © 2025
 /// ---------------------------------------------------------------------------
 
 library;
