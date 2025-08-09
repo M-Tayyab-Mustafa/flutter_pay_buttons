@@ -126,7 +126,7 @@ class _ApplePayButtonState extends State<ApplePayButton> {
   Map<PayProvider, PaymentConfiguration> get _configurations => {
     PayProvider.apple_pay: PaymentConfiguration.fromJsonString(
       jsonEncode({
-        "provider": "flutter_pay_buttons",
+        "provider": "apple_pay",
         "data": {
           "merchantIdentifier": widget.merchantId,
           "displayName": widget.merchantName,
