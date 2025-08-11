@@ -31,14 +31,16 @@ library;
 
 import 'dart:async';
 import 'dart:convert';
-import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:pay/pay.dart';
 
 // Export everything from pay except our custom ApplePayButton widget
 export 'package:pay/pay.dart' hide ApplePayButton;
 
-// Link to the internal implementation of ApplePayButton
+part 'utils.dart';
+// Link to the internal implementations
 part 'src/apple_pay.dart';
+part 'src/google_pay.dart';
