@@ -92,6 +92,7 @@ class ApplePayButton extends StatefulWidget {
     this.requiredBillingContactFields,
     this.requiredShippingContactFields,
     required this.onPaymentResult,
+    this.child,
   });
 
   // UI customization
@@ -101,6 +102,7 @@ class ApplePayButton extends StatefulWidget {
   final Color? backgroundColor;
   final double? cornersRadius;
   final TextStyle? labelStyle;
+  final Widget? child;
 
   // Payment-related fields
   final String merchantId;
@@ -166,34 +168,36 @@ class _ApplePayButtonState extends State<ApplePayButton> {
             debugPrint('\x1B[31m [Apple Pay] Error: $e \x1B[0m');
           }
         },
-        child: Container(
-          // Dimensions and padding of the button
-          height: widget.height ?? _buttonSize,
-          width: widget.width,
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
-          decoration: BoxDecoration(color: widget.backgroundColor ?? Colors.black, borderRadius: BorderRadius.circular(widget.cornersRadius ?? 10)),
-          child: Center(
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                // Displays Apple logo using SVG
-                SizedBox(
-                  height: (widget.height ?? _buttonSize) * 0.9,
-                  width: (widget.height ?? _buttonSize) * 0.55,
-                  child: FittedBox(fit: BoxFit.fill, child: SvgPicture.memory(_appleLogoSvgBytes)),
+        child:
+            widget.child ??
+            Container(
+              // Dimensions and padding of the button
+              height: widget.height ?? _buttonSize,
+              width: widget.width,
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
+              decoration: BoxDecoration(color: widget.backgroundColor ?? Colors.black, borderRadius: BorderRadius.circular(widget.cornersRadius ?? 10)),
+              child: Center(
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    // Displays Apple logo using SVG
+                    SizedBox(
+                      height: (widget.height ?? _buttonSize) * 0.9,
+                      width: (widget.height ?? _buttonSize) * 0.45,
+                      child: FittedBox(fit: BoxFit.fill, child: SvgPicture.memory(_appleLogoSvgBytes)),
+                    ),
+                    // Adds space between logo and text
+                    Padding(
+                      padding: const EdgeInsets.only(left: 10),
+                      child: Text(
+                        'Pay with Apple Pay',
+                        style: TextStyle(color: Colors.white, fontSize: (widget.height ?? _buttonSize) * 0.3, fontWeight: FontWeight.w600, letterSpacing: 0.7),
+                      ),
+                    ),
+                  ],
                 ),
-                // Adds space between logo and text
-                Padding(
-                  padding: const EdgeInsets.only(left: 10),
-                  child: Text(
-                    'Pay with Apple Pay',
-                    style: TextStyle(color: Colors.white, fontSize: (widget.height ?? _buttonSize) * 0.3, fontWeight: FontWeight.w600, letterSpacing: 0.7),
-                  ),
-                ),
-              ],
+              ),
             ),
-          ),
-        ),
       ),
     );
   }

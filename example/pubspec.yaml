@@ -1,0 +1,60 @@
+name: flutter_pay_buttons_example
+description: "Shows how to use the flutter_pay_buttons plugin."
+
+publish_to: 'none' 
+
+version: 1.0.0+1
+
+environment:
+  sdk: ">=3.8.1 <4.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  cupertino_icons: any
+  flutter_pay_buttons:
+    path: ../
+
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: any
+
+
+
+
+
+flutter:
+  uses-material-design: true
+
+  
+  
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
