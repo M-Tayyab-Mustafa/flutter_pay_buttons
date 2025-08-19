@@ -109,7 +109,7 @@ class GooglePayButton extends StatefulWidget {
     required this.merchantName,
     this.child,
   }) : assert(
-         (tokenizationSpecificationType != TokenizationSpecificationType.paymentGateway) && (tokenizationSpecificationParameters != null),
+         !(tokenizationSpecificationType == TokenizationSpecificationType.paymentGateway && tokenizationSpecificationParameters == null),
          'Invalid tokenization specification: tokenizationSpecificationParameters are required when type is set to paymentGateway',
        );
 
@@ -210,6 +210,7 @@ class _GooglePayButtonState extends State<GooglePayButton> {
 
   @override
   Widget build(BuildContext context) {
+    if (!Platform.isAndroid) return SizedBox.shrink();
     return Padding(
       // Applies external spacing to the button
       padding: widget.margin ?? const EdgeInsets.symmetric(horizontal: 16),
