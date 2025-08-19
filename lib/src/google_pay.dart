@@ -109,7 +109,7 @@ class GooglePayButton extends StatefulWidget {
     required this.merchantName,
     this.child,
   }) : assert(
-         (tokenizationSpecificationType != TokenizationSpecificationType.paymentGateway),
+         (tokenizationSpecificationType != TokenizationSpecificationType.paymentGateway) && (tokenizationSpecificationParameters != null),
          'Invalid tokenization specification: tokenizationSpecificationParameters are required when type is set to paymentGateway',
        );
 
