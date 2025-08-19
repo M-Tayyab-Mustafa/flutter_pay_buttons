@@ -210,6 +210,7 @@ class _GooglePayButtonState extends State<GooglePayButton> {
 
   @override
   Widget build(BuildContext context) {
+    if (!Platform.isAndroid) return SizedBox.shrink();
     return Padding(
       // Applies external spacing to the button
       padding: widget.margin ?? const EdgeInsets.symmetric(horizontal: 16),
