@@ -1,16 +1,8 @@
-/// Copyright 2024 M-Tayyab-Mustafa
-///
-/// Licensed under the Apache License, Version 2.0 (the "License");
-/// you may not use this file except in compliance with the License.
-/// You may obtain a copy of the License at
-///
-///     http://www.apache.org/licenses/LICENSE-2.0
-///
-/// Unless required by applicable law or agreed to in writing, software
-/// distributed under the License is distributed on an "AS IS" BASIS,
-/// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-/// See the License for the specific language governing permissions and
-/// limitations under the License.
+/* SPDX-License-Identifier: CECILL-2.1
+ * Copyright (c) 2024 M-Tayyab-Mustafa
+ * Licensed under the CeCILL-2.1 License
+ * See the LICENSE file for details.
+ */
 
 part of '../flutter_pay_buttons.dart';
 
@@ -71,7 +63,11 @@ Uint8List get _appleLogoSvgBytes => Uint8List.fromList(
 /// ```dart
 /// widget.onPaymentResult(result);
 /// ```
-
+/// A customizable Apple Pay button widget integrated with the `pay` plugin.
+///
+/// This widget displays an Apple Pay button that triggers the Apple Pay payment
+/// sheet when tapped. It provides configuration options for merchant details,
+/// supported networks, currencies, billing/shipping requirements, and styling.
 class ApplePayButton extends StatefulWidget {
   const ApplePayButton({
     super.key,
@@ -94,39 +90,84 @@ class ApplePayButton extends StatefulWidget {
     this.mainAxisSize = MainAxisSize.min,
     this.mainAxisAlignment = MainAxisAlignment.start,
     this.child,
-  }) : assert(!(width != null && width < 220), 'Invalid width: width must be less than 220');
+  }) : // Validation: ensure the button width is not too small
+       assert(
+         !(width != null && width < 220),
+         'Invalid width: width must be less than 220',
+       );
 
-  // UI customization
+  // ----------- UI CUSTOMIZATION PROPERTIES -----------
+
+  /// Height of the Apple Pay button.
   final double? height;
+
+  /// Width of the Apple Pay button.
   final double? width;
+
+  /// External spacing (margin) around the button.
   final EdgeInsets? margin;
+
+  /// Background color of the button.
   final Color? backgroundColor;
+
+  /// Corner radius for rounded button edges.
   final double? cornersRadius;
+
+  /// Custom widget to replace the default Apple Pay button UI.
   final Widget? child;
+
+  /// How child widgets are aligned horizontally inside the button.
   final MainAxisAlignment mainAxisAlignment;
+
+  /// Determines how much horizontal space the button’s Row takes up.
   final MainAxisSize mainAxisSize;
 
-  // Payment-related fields
+  // ----------- PAYMENT CONFIGURATION PROPERTIES -----------
+
+  /// Apple Pay merchant identifier (issued by Apple).
   final String merchantId;
+
+  /// Display name of the merchant shown in Apple Pay sheet.
   final String merchantName;
+
+  /// Total amount for the transaction (for reference only; actual items are in [paymentItems]).
   final String amount;
+
+  /// Capabilities supported by the merchant (e.g., 3DS, debit, credit).
   final List<String>? merchantCapabilities;
+
+  /// Supported card networks (e.g., visa, amex, masterCard).
   final List<String>? supportedNetworks;
+
+  /// Country code (e.g., "US", "PK").
   final String? countryCode;
+
+  /// Currency code (e.g., "USD", "EUR").
   final String? currencyCode;
+
+  /// List of payment items shown in the Apple Pay sheet.
   final List<PaymentItem> paymentItems;
+
+  /// Required billing contact fields (e.g., name, postalAddress, phone).
   final List<String>? requiredBillingContactFields;
+
+  /// Required shipping contact fields (e.g., postalAddress, name).
   final List<String>? requiredShippingContactFields;
 
-  // Callback for payment result
+  // ----------- CALLBACKS -----------
+
+  /// Callback invoked when Apple Pay returns a payment result.
+  ///
+  /// The result is a `Map<String, dynamic>` containing transaction data.
   final FutureOr<void> Function(Map<String, dynamic> result) onPaymentResult;
 
   @override
   State<ApplePayButton> createState() => _ApplePayButtonState();
 }
 
+/// Internal state for [ApplePayButton].
 class _ApplePayButtonState extends State<ApplePayButton> {
-  // Creates the Apple Pay configuration required by the 'pay' plugin
+  /// Builds Apple Pay configuration JSON for the `pay` plugin.
   Map<PayProvider, PaymentConfiguration> get _configurations => {
     PayProvider.apple_pay: PaymentConfiguration.fromJsonString(
       jsonEncode({
@@ -134,63 +175,88 @@ class _ApplePayButtonState extends State<ApplePayButton> {
         "data": {
           "merchantIdentifier": widget.merchantId,
           "displayName": widget.merchantName,
-          "merchantCapabilities": widget.merchantCapabilities ?? ["3DS", "debit", "credit"],
-          "supportedNetworks": widget.supportedNetworks ?? ["amex", "visa", "discover", "masterCard"],
+          "merchantCapabilities":
+              widget.merchantCapabilities ?? ["3DS", "debit", "credit"],
+          "supportedNetworks":
+              widget.supportedNetworks ??
+              ["amex", "visa", "discover", "masterCard"],
           "countryCode": widget.countryCode ?? "US",
           "currencyCode": widget.currencyCode ?? "USD",
-          "requiredBillingContactFields": widget.requiredBillingContactFields ?? [],
-          "requiredShippingContactFields": widget.requiredShippingContactFields ?? [],
+          "requiredBillingContactFields":
+              widget.requiredBillingContactFields ?? [],
+          "requiredShippingContactFields":
+              widget.requiredShippingContactFields ?? [],
         },
       }),
     ),
   };
 
-  // Initializes the Pay client with the configuration
+  /// Initializes the Pay client with the Apple Pay configuration.
   Pay get _pay => Pay(_configurations);
 
-  // Default button height if user hasn't set one
+  /// Default size for the button when no custom dimensions are provided.
   Size get _buttonSize => Size(220, 40);
 
   @override
   Widget build(BuildContext context) {
-    // Initialize SizeConfig
+    // Initialize screen scaling configuration (responsive UI setup).
     SizeConfig.initialization(context);
+
     return Padding(
-      // Applies external spacing to the button
+      // Adds external spacing (margin) around the button.
       padding: widget.margin ?? const EdgeInsets.symmetric(horizontal: 16),
       child: GestureDetector(
-        // Handles tap event to start the Apple Pay flow
+        // Handles tap to trigger Apple Pay sheet.
         onTap: () async {
           try {
-            // Shows the Apple Pay sheet with the payment items
-            final result = await _pay.showPaymentSelector(PayProvider.apple_pay, widget.paymentItems);
+            // Display Apple Pay payment selector with provided items.
+            final result = await _pay.showPaymentSelector(
+              PayProvider.apple_pay,
+              widget.paymentItems,
+            );
 
-            // Calls the user-defined callback with the result
+            // Send payment result back to the provided callback.
             return widget.onPaymentResult(result);
           } catch (e) {
-            // Prints error in red if something goes wrong
+            // Catch and log any runtime errors during Apple Pay flow.
             debugPrint('\x1B[31m [Apple Pay] Error: $e \x1B[0m');
           }
         },
+        // If user provided a custom child, use it; otherwise use default button UI.
         child:
             widget.child ??
             Container(
               height: widget.height?.pr ?? _buttonSize.height.pr,
               width: widget.width?.pr ?? _buttonSize.width.pr,
               padding: ScaledEdgeInsets.symmetric(horizontal: 20),
-              decoration: BoxDecoration(color: widget.backgroundColor ?? Colors.black, borderRadius: BorderRadius.circular(widget.cornersRadius?.pr ?? 10.pr)),
+              decoration: BoxDecoration(
+                color: widget.backgroundColor ?? Colors.black,
+                borderRadius: BorderRadius.circular(
+                  widget.cornersRadius?.pr ?? 10.pr,
+                ),
+              ),
               child: Row(
                 mainAxisSize: widget.mainAxisSize,
                 mainAxisAlignment: widget.mainAxisAlignment,
                 children: [
-                  // Displays Google logo using SVG
-                  SvgPicture.memory(_appleLogoSvgBytes, height: 30.pr, width: 30.pr),
-                  // Adds space between logo and text
+                  // Displays Apple Pay logo as an SVG image.
+                  SvgPicture.memory(
+                    _appleLogoSvgBytes,
+                    height: 30.pr,
+                    width: 30.pr,
+                  ),
+                  // Adds space between logo and text.
                   Padding(
                     padding: ScaledEdgeInsets.only(left: 10),
                     child: Text(
                       'Pay with Apple Pay',
-                      style: TextStyle(color: Colors.white, fontSize: 14.sp, fontWeight: FontWeight.w600, letterSpacing: 0.5.sp, wordSpacing: 1.sp),
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 14.sp,
+                        fontWeight: FontWeight.w600,
+                        letterSpacing: 0.5.sp,
+                        wordSpacing: 1.sp,
+                      ),
                     ),
                   ),
                 ],

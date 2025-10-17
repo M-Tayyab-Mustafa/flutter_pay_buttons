@@ -17,6 +17,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 - Update docs and remove dart:io for wasm compatibility.
+- 
 
 ### Known Issues
 - Apple Pay testing requires a real iOS device with Apple Pay setup.

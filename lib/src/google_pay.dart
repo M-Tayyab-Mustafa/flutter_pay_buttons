@@ -1,16 +1,8 @@
-/// Copyright 2024 M-Tayyab-Mustafa
-///
-/// Licensed under the Apache License, Version 2.0 (the "License");
-/// you may not use this file except in compliance with the License.
-/// You may obtain a copy of the License at
-///
-///     http://www.apache.org/licenses/LICENSE-2.0
-///
-/// Unless required by applicable law or agreed to in writing, software
-/// distributed under the License is distributed on an "AS IS" BASIS,
-/// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-/// See the License for the specific language governing permissions and
-/// limitations under the License.
+/* SPDX-License-Identifier: CECILL-2.1
+ * Copyright (c) 2024 M-Tayyab-Mustafa
+ * Licensed under the CeCILL-2.1 License
+ * See the LICENSE file for details.
+ */
 
 part of '../flutter_pay_buttons.dart';
 
@@ -79,7 +71,8 @@ Uint8List get _googleLogoSvgBytes => Uint8List.fromList(
 /// ```dart
 /// widget.onPaymentResult(result);
 /// ```
-
+/// A custom Google Pay button widget that integrates with the `pay` plugin.
+/// It allows easy setup of Google Pay payment flow with UI customization options.
 class GooglePayButton extends StatefulWidget {
   const GooglePayButton({
     super.key,
@@ -109,50 +102,110 @@ class GooglePayButton extends StatefulWidget {
     required this.totalPrice,
     required this.merchantId,
     required this.merchantName,
-  }) : assert(
-         !(tokenizationSpecificationType == TokenizationSpecificationType.paymentGateway && tokenizationSpecificationParameters == null),
+  }) : // Validation: if using payment gateway, parameters must be provided
+       assert(
+         !(tokenizationSpecificationType ==
+                 TokenizationSpecificationType.paymentGateway &&
+             tokenizationSpecificationParameters == null),
          'Invalid tokenization specification: tokenizationSpecificationParameters are required when type is set to paymentGateway',
        ),
-       assert(!(width != null && width < 220), 'Invalid width: width must be less than 220');
+       // Validation: ensure the width is at least 220
+       assert(
+         !(width != null && width < 220),
+         'Invalid width: width must be less than 220',
+       );
 
-  // UI customization
+  // ----------- UI CUSTOMIZATION PARAMETERS -----------
+
+  /// Height of the Google Pay button.
   final double? height;
+
+  /// Width of the Google Pay button.
   final double? width;
+
+  /// External margin around the button.
   final ScaledEdgeInsets? margin;
+
+  /// Background color of the button.
   final Color? backgroundColor;
+
+  /// Border radius for rounded corners.
   final double? cornersRadius;
+
+  /// Optional custom child widget to replace the default design.
   final Widget? child;
+
+  /// Main axis alignment for button content.
   final MainAxisAlignment mainAxisAlignment;
+
+  /// Main axis size for button layout.
   final MainAxisSize mainAxisSize;
 
-  // Payment-related fields
+  // ----------- PAYMENT CONFIGURATION PARAMETERS -----------
+
+  /// Whether to use the Google Pay test environment.
   final bool isTesting;
+
+  /// List of payment items to be shown in the payment sheet.
   final List<PaymentItem> paymentItems;
+
+  /// API version for Google Pay.
   final int? apiVersion;
+
+  /// Minor version of the API.
   final int? apiVersionMinor;
+
+  /// Allowed card networks (e.g., VISA, MASTERCARD).
   final List<String>? allowedCardNetworks;
+
+  /// Whether billing address is required in the payment.
   final bool billingAddressRequired;
+
+  /// Billing address format (e.g., "FULL" or "MINIMAL").
   final String? billingAddressFormat;
+
+  /// Whether phone number is required for billing address.
   final bool phoneNumberRequired;
+
+  /// Type of tokenization (e.g., direct or payment gateway).
   final TokenizationSpecificationType tokenizationSpecificationType;
+
+  /// Parameters for tokenization (required for payment gateway type).
   final Map<String, dynamic>? tokenizationSpecificationParameters;
+
+  /// Public key used for direct tokenization.
   final String? publicKey;
+
+  /// Currency code (e.g., USD, EUR).
   final String? currencyCode;
+
+  /// Status of transaction info (e.g., final or estimated).
   final TransactionInfoStatus? transactionInfoStatus;
+
+  /// Total transaction price as a string.
   final String totalPrice;
+
+  /// Checkout option type (immediate or lazy).
   final CheckoutOption checkoutOption;
+
+  /// Merchant ID for Google Pay.
   final String merchantId;
+
+  /// Merchant name displayed in Google Pay.
   final String merchantName;
 
-  // Callback for payment result
+  // ----------- CALLBACKS -----------
+
+  /// Callback invoked when a payment result is received.
   final FutureOr<void> Function(Map<String, dynamic> result) onPaymentResult;
 
   @override
   State<GooglePayButton> createState() => _GooglePayButtonState();
 }
 
+/// Internal state for [GooglePayButton].
 class _GooglePayButtonState extends State<GooglePayButton> {
-  // Creates the Google Pay configuration required by the 'pay' plugin
+  // Builds the Google Pay configuration JSON required by the `pay` plugin.
   Map<PayProvider, PaymentConfiguration> get _configurations => {
     PayProvider.google_pay: PaymentConfiguration.fromJsonString(
       jsonEncode({
@@ -166,16 +219,32 @@ class _GooglePayButtonState extends State<GooglePayButton> {
               "type": "CARD",
               "parameters": {
                 "allowedAuthMethods": ["PAN_ONLY", "CRYPTOGRAM_3DS"],
-                "allowedCardNetworks": widget.allowedCardNetworks ?? ["MASTERCARD", "VISA", "AMEX", "DISCOVER", "INTERAC", "JCB"],
+                "allowedCardNetworks":
+                    widget.allowedCardNetworks ??
+                    [
+                      "MASTERCARD",
+                      "VISA",
+                      "AMEX",
+                      "DISCOVER",
+                      "INTERAC",
+                      "JCB",
+                    ],
                 "assuranceDetailsRequired": true,
                 "billingAddressRequired": widget.billingAddressRequired,
-                "billingAddressParameters": {"format": widget.billingAddressFormat ?? "FULL", "phoneNumberRequired": widget.phoneNumberRequired},
+                "billingAddressParameters": {
+                  "format": widget.billingAddressFormat ?? "FULL",
+                  "phoneNumberRequired": widget.phoneNumberRequired,
+                },
               },
               "tokenizationSpecification": {
                 "type": widget.tokenizationSpecificationType.value,
                 "parameters": switch (widget.tokenizationSpecificationType) {
-                  TokenizationSpecificationType.paymentGateway => widget.tokenizationSpecificationParameters!,
-                  TokenizationSpecificationType.direct => {"protocolVersion": "ECv2", "publicKey": widget.publicKey},
+                  TokenizationSpecificationType.paymentGateway =>
+                    widget.tokenizationSpecificationParameters!,
+                  TokenizationSpecificationType.direct => {
+                    "protocolVersion": "ECv2",
+                    "publicKey": widget.publicKey,
+                  },
                 },
               },
             },
@@ -183,87 +252,116 @@ class _GooglePayButtonState extends State<GooglePayButton> {
           "transactionInfo": {
             "currencyCode": widget.currencyCode ?? "USD",
             "countryCode": widget.currencyCode?.substring(0, 2) ?? "US",
-            "totalPriceStatus": widget.transactionInfoStatus?.value ?? TransactionInfoStatus.statusFinal.value,
+            "totalPriceStatus":
+                widget.transactionInfoStatus?.value ??
+                TransactionInfoStatus.statusFinal.value,
             "totalPrice": widget.totalPrice,
             "checkoutOption": widget.checkoutOption.value,
           },
-          "merchantInfo": {"merchantId": widget.merchantId, "merchantName": widget.merchantName},
+          "merchantInfo": {
+            "merchantId": widget.merchantId,
+            "merchantName": widget.merchantName,
+          },
         },
       }),
     ),
   };
 
-  // Initializes the Pay client with the configuration
+  /// Initializes the Pay client with the Google Pay configuration.
   Pay get _pay => Pay(_configurations);
 
-  // Default button height if user hasn't set one
+  /// Default fallback size for the button.
   Size get _buttonSize => Size(220, 40);
 
-  // Event channel to listen for payment results
-  static const _eventChannel = EventChannel('plugins.flutter.io/pay/payment_result');
+  /// Event channel for receiving payment results from native platform (Android/iOS).
+  static const _eventChannel = EventChannel(
+    'plugins.flutter.io/pay/payment_result',
+  );
 
-  /// This channel receives payment results from the native platform.
+  /// Subscription to listen for payment results.
   StreamSubscription<Map<String, dynamic>>? _paymentResultSubscription;
 
   @override
   void dispose() {
+    // Cancel any active subscriptions when widget is disposed.
     _paymentResultSubscription?.cancel();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    // Initialize SizeConfig
+    // Initialize responsive sizing configuration.
     SizeConfig.initialization(context);
+
     return Padding(
-      // Applies external spacing to the button
+      // Adds margin (spacing) around the button.
       padding: widget.margin ?? ScaledEdgeInsets.symmetric(horizontal: 16),
       child: GestureDetector(
-        // Handles tap event to start the Google Pay flow
+        // Detects taps on the button.
         onTap: () async {
           try {
-            // Cancels any previous payment result subscription
+            // Cancel previous event listener if active.
             _paymentResultSubscription?.cancel();
 
+            // Start listening for payment result events.
             _paymentResultSubscription = _eventChannel
                 .receiveBroadcastStream()
-                .map((result) => jsonDecode(result as String) as Map<String, dynamic>)
+                .map(
+                  (result) =>
+                      jsonDecode(result as String) as Map<String, dynamic>,
+                )
                 .listen(
-                  (result) {
-                    // Calls the user-defined callback with the result
-                    widget.onPaymentResult(result);
-                  },
-                  onError: (error) {
-                    // Prints error in red if something goes wrong
-                    debugPrint('\x1B[31m [Google Pay] Error: $error \x1B[0m');
-                  },
+                  // Pass payment result to callback.
+                  (result) => widget.onPaymentResult(result),
+                  onError: (error) =>
+                      debugPrint('\x1B[31m [Google Pay] Error: $error \x1B[0m'),
                 );
-            // Shows the Google Pay sheet with the payment items
-            await _pay.showPaymentSelector(PayProvider.google_pay, widget.paymentItems);
+
+            // Launch Google Pay payment sheet with provided payment items.
+            await _pay.showPaymentSelector(
+              PayProvider.google_pay,
+              widget.paymentItems,
+            );
           } catch (e) {
-            // Prints error in red if something goes wrong
+            // Handle and log any errors gracefully.
             debugPrint('\x1B[31m [Google Pay] Error: $e \x1B[0m');
           }
         },
         child:
             widget.child ??
+            // Default Google Pay button UI.
             Container(
               height: widget.height?.pr ?? _buttonSize.height.pr,
               width: widget.width?.pr ?? _buttonSize.width.pr,
               padding: ScaledEdgeInsets.symmetric(horizontal: 20),
-              decoration: BoxDecoration(color: widget.backgroundColor ?? Colors.black, borderRadius: BorderRadius.circular(widget.cornersRadius?.pr ?? 10.pr)),
+              decoration: BoxDecoration(
+                color: widget.backgroundColor ?? Colors.black,
+                borderRadius: BorderRadius.circular(
+                  widget.cornersRadius?.pr ?? 10.pr,
+                ),
+              ),
               child: Row(
                 mainAxisSize: widget.mainAxisSize,
                 mainAxisAlignment: widget.mainAxisAlignment,
                 children: [
-                  // Displays Google logo using SVG
-                  SvgPicture.memory(_googleLogoSvgBytes, height: 22.pr, width: 22.pr),
-                  // Adds space between logo and text
+                  // Display Google Pay logo (SVG).
+                  SvgPicture.memory(
+                    _googleLogoSvgBytes,
+                    height: 22.pr,
+                    width: 22.pr,
+                  ),
+                  // Space between logo and text.
                   Padding(
                     padding: ScaledEdgeInsets.only(left: 10),
                     child: Text(
                       'Pay with Google Pay',
-                      style: TextStyle(color: Colors.white, fontSize: 14.sp, fontWeight: FontWeight.w600, letterSpacing: 0.5.sp, wordSpacing: 1.sp),
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 14.sp,
+                        fontWeight: FontWeight.w600,
+                        letterSpacing: 0.5.sp,
+                        wordSpacing: 1.sp,
+                      ),
                     ),
                   ),
                 ],
