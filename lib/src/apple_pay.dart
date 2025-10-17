@@ -150,6 +150,7 @@ class _ApplePayButtonState extends State<ApplePayButton> {
   @override
   Widget build(BuildContext context) {
     if (Platform.isAndroid) return const SizedBox.shrink();
+    SizeConfig.initialization(context);
     return Padding(
       // Applies external spacing to the button
       padding: widget.margin ?? const EdgeInsets.symmetric(horizontal: 16),
