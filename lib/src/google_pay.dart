@@ -88,7 +88,6 @@ class GooglePayButton extends StatefulWidget {
     this.margin,
     this.backgroundColor,
     this.cornersRadius,
-    this.labelStyle,
     required this.onPaymentResult,
     this.isTesting = false,
     required this.paymentItems,
@@ -116,10 +115,9 @@ class GooglePayButton extends StatefulWidget {
   // UI customization
   final double? height;
   final double? width;
-  final EdgeInsets? margin;
+  final ScaledEdgeInsets? margin;
   final Color? backgroundColor;
   final double? cornersRadius;
-  final TextStyle? labelStyle;
   final Widget? child;
 
   // Payment-related fields
@@ -194,7 +192,7 @@ class _GooglePayButtonState extends State<GooglePayButton> {
   Pay get _pay => Pay(_configurations);
 
   // Default button height if user hasn't set one
-  double get _buttonSize => 50;
+  Size get _buttonSize => Size(210, 40);
 
   // Event channel to listen for payment results
   static const _eventChannel = EventChannel('plugins.flutter.io/pay/payment_result');
@@ -210,10 +208,11 @@ class _GooglePayButtonState extends State<GooglePayButton> {
 
   @override
   Widget build(BuildContext context) {
-    if (!Platform.isAndroid) return SizedBox.shrink();
+    // Initialize SizeConfig
+    SizeConfig.initialization(context);
     return Padding(
       // Applies external spacing to the button
-      padding: widget.margin ?? const EdgeInsets.symmetric(horizontal: 16),
+      padding: widget.margin ?? ScaledEdgeInsets.symmetric(horizontal: 16),
       child: GestureDetector(
         // Handles tap event to start the Google Pay flow
         onTap: () async {
@@ -244,34 +243,24 @@ class _GooglePayButtonState extends State<GooglePayButton> {
         child:
             widget.child ??
             Container(
-              // Dimensions and padding of the button
-              height: widget.height ?? _buttonSize,
-              width: widget.width,
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
-              decoration: BoxDecoration(color: widget.backgroundColor ?? Colors.black, borderRadius: BorderRadius.circular(widget.cornersRadius ?? 10)),
-              child: Center(
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    // Displays Google logo using SVG
-                    SizedBox(
-                      height: (widget.height ?? _buttonSize) * 0.9,
-                      width: (widget.height ?? _buttonSize) * 0.45,
-                      child: FittedBox(
-                        fit: BoxFit.fill,
-                        child: SvgPicture.memory(_googleLogoSvgBytes, fit: BoxFit.fill),
-                      ),
+              height: widget.height?.pr ?? _buttonSize.height.pr,
+              width: widget.width?.pr ?? _buttonSize.width.pr,
+              padding: ScaledEdgeInsets.symmetric(horizontal: 20),
+              decoration: BoxDecoration(color: widget.backgroundColor ?? Colors.black, borderRadius: BorderRadius.circular(widget.cornersRadius?.pr ?? 10.pr)),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  // Displays Google logo using SVG
+                  SvgPicture.memory(_googleLogoSvgBytes, height: 20.pr, width: 20.pr),
+                  // Adds space between logo and text
+                  Padding(
+                    padding: ScaledEdgeInsets.only(left: 10),
+                    child: Text(
+                      'Pay with Google Pay',
+                      style: TextStyle(color: Colors.white, fontSize: 13.sp, fontWeight: FontWeight.w600, letterSpacing: 0.5.sp, wordSpacing: 1.sp),
                     ),
-                    // Adds space between logo and text
-                    Padding(
-                      padding: const EdgeInsets.only(left: 10),
-                      child: Text(
-                        'Pay with Google Pay',
-                        style: TextStyle(color: Colors.white, fontSize: (widget.height ?? _buttonSize) * 0.3, fontWeight: FontWeight.w600, letterSpacing: 0.7),
-                      ),
-                    ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
       ),

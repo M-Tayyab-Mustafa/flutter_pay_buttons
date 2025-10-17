@@ -22,7 +22,7 @@
 /// - Exports most of the `pay` package functionality (except the built-in ApplePayButton)
 /// - Adds a custom ApplePayButton with extended UI customization
 ///
-/// Author: [Your Name or Company]
+/// Author: [M.Tayyab Mustafa]
 /// License: MIT
 /// Copyright © 2025
 /// ---------------------------------------------------------------------------
@@ -41,7 +41,8 @@ import 'package:pay/pay.dart';
 // Export everything from pay except our custom ApplePayButton widget
 export 'package:pay/pay.dart' hide ApplePayButton;
 
-part 'utils.dart';
+part 'utils/enums.dart';
+part 'utils/size_config.dart';
 // Link to the internal implementations
 part 'src/apple_pay.dart';
 part 'src/google_pay.dart';

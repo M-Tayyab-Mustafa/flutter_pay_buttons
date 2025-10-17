@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_pay_buttons/flutter_pay_buttons.dart';
 
@@ -35,22 +33,21 @@ class _HomePageState extends State<HomePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            if (Platform.isIOS)
-              ApplePayButton(
-                merchantId: 'YOUR_MERCHANT_ID',
-                merchantName: 'Example Merchant',
-                amount: '99.00',
-                paymentItems: [
-                  // Example payment items
-                  PaymentItem(label: 'Product', amount: '99.99', status: PaymentItemStatus.final_price, type: PaymentItemType.item),
-                  // Total amount
-                  PaymentItem(label: 'Total', amount: '99.99', status: PaymentItemStatus.final_price),
-                ],
-                margin: EdgeInsets.only(bottom: 16, left: 16, right: 16),
-                onPaymentResult: (result) {
-                  debugPrint('Payment Result: $result');
-                },
-              ),
+            ApplePayButton(
+              merchantId: 'YOUR_MERCHANT_ID',
+              merchantName: 'Example Merchant',
+              amount: '99.00',
+              paymentItems: [
+                // Example payment items
+                PaymentItem(label: 'Product', amount: '99.99', status: PaymentItemStatus.final_price, type: PaymentItemType.item),
+                // Total amount
+                PaymentItem(label: 'Total', amount: '99.99', status: PaymentItemStatus.final_price),
+              ],
+              margin: EdgeInsets.only(bottom: 16, left: 16, right: 16),
+              onPaymentResult: (result) {
+                debugPrint('Payment Result: $result');
+              },
+            ),
             GooglePayButton(
               totalPrice: '10.00',
               merchantId: 'YOUR_MERCHANT_ID',
