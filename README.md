@@ -113,7 +113,7 @@ ApplePayButton(
 ## 💙 Author
 
 **M-Tayyab-Mustafa**  
-📧 mtayyabmustafa.dev@gmail.com  
+📧 m.tayyabmustafa.joiya@gmail.com  
 🌐 [github.com/M-Tayyab-Mustafa](https://github.com/M-Tayyab-Mustafa)
 
 ---
