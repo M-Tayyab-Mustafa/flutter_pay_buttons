@@ -91,8 +91,10 @@ class ApplePayButton extends StatefulWidget {
     this.requiredBillingContactFields,
     this.requiredShippingContactFields,
     required this.onPaymentResult,
+    this.mainAxisSize = MainAxisSize.min,
+    this.mainAxisAlignment = MainAxisAlignment.start,
     this.child,
-  });
+  }) : assert(!(width != null && width < 220), 'Invalid width: width must be less than 220');
 
   // UI customization
   final double? height;
@@ -101,6 +103,8 @@ class ApplePayButton extends StatefulWidget {
   final Color? backgroundColor;
   final double? cornersRadius;
   final Widget? child;
+  final MainAxisAlignment mainAxisAlignment;
+  final MainAxisSize mainAxisSize;
 
   // Payment-related fields
   final String merchantId;
@@ -145,11 +149,11 @@ class _ApplePayButtonState extends State<ApplePayButton> {
   Pay get _pay => Pay(_configurations);
 
   // Default button height if user hasn't set one
-  Size get _buttonSize => Size(210, 40);
+  Size get _buttonSize => Size(220, 40);
 
   @override
   Widget build(BuildContext context) {
-    if (Platform.isAndroid) return const SizedBox.shrink();
+    // if (Platform.isAndroid) return const SizedBox.shrink();
     SizeConfig.initialization(context);
     return Padding(
       // Applies external spacing to the button
@@ -176,16 +180,17 @@ class _ApplePayButtonState extends State<ApplePayButton> {
               padding: ScaledEdgeInsets.symmetric(horizontal: 20),
               decoration: BoxDecoration(color: widget.backgroundColor ?? Colors.black, borderRadius: BorderRadius.circular(widget.cornersRadius?.pr ?? 10.pr)),
               child: Row(
-                mainAxisSize: MainAxisSize.min,
+                mainAxisSize: widget.mainAxisSize,
+                mainAxisAlignment: widget.mainAxisAlignment,
                 children: [
                   // Displays Google logo using SVG
-                  SvgPicture.memory(_appleLogoSvgBytes, height: 25.pr, width: 25.pr),
+                  SvgPicture.memory(_appleLogoSvgBytes, height: 30.pr, width: 30.pr),
                   // Adds space between logo and text
                   Padding(
                     padding: ScaledEdgeInsets.only(left: 10),
                     child: Text(
                       'Pay with Apple Pay',
-                      style: TextStyle(color: Colors.white, fontSize: 13.sp, fontWeight: FontWeight.w600, letterSpacing: 0.5.sp, wordSpacing: 1.sp),
+                      style: TextStyle(color: Colors.white, fontSize: 14.sp, fontWeight: FontWeight.w600, letterSpacing: 0.5.sp, wordSpacing: 1.sp),
                     ),
                   ),
                 ],

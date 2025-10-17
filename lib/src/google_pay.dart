@@ -88,9 +88,7 @@ class GooglePayButton extends StatefulWidget {
     this.margin,
     this.backgroundColor,
     this.cornersRadius,
-    required this.onPaymentResult,
     this.isTesting = false,
-    required this.paymentItems,
     this.checkoutOption = CheckoutOption.lazy,
     this.apiVersion,
     this.apiVersionMinor,
@@ -103,14 +101,19 @@ class GooglePayButton extends StatefulWidget {
     this.publicKey,
     this.currencyCode,
     this.transactionInfoStatus,
+    this.child,
+    this.mainAxisAlignment = MainAxisAlignment.start,
+    this.mainAxisSize = MainAxisSize.min,
+    required this.onPaymentResult,
+    required this.paymentItems,
     required this.totalPrice,
     required this.merchantId,
     required this.merchantName,
-    this.child,
   }) : assert(
          !(tokenizationSpecificationType == TokenizationSpecificationType.paymentGateway && tokenizationSpecificationParameters == null),
          'Invalid tokenization specification: tokenizationSpecificationParameters are required when type is set to paymentGateway',
-       );
+       ),
+       assert(!(width != null && width < 220), 'Invalid width: width must be less than 220');
 
   // UI customization
   final double? height;
@@ -119,6 +122,8 @@ class GooglePayButton extends StatefulWidget {
   final Color? backgroundColor;
   final double? cornersRadius;
   final Widget? child;
+  final MainAxisAlignment mainAxisAlignment;
+  final MainAxisSize mainAxisSize;
 
   // Payment-related fields
   final bool isTesting;
@@ -192,7 +197,7 @@ class _GooglePayButtonState extends State<GooglePayButton> {
   Pay get _pay => Pay(_configurations);
 
   // Default button height if user hasn't set one
-  Size get _buttonSize => Size(210, 40);
+  Size get _buttonSize => Size(220, 40);
 
   // Event channel to listen for payment results
   static const _eventChannel = EventChannel('plugins.flutter.io/pay/payment_result');
@@ -248,16 +253,17 @@ class _GooglePayButtonState extends State<GooglePayButton> {
               padding: ScaledEdgeInsets.symmetric(horizontal: 20),
               decoration: BoxDecoration(color: widget.backgroundColor ?? Colors.black, borderRadius: BorderRadius.circular(widget.cornersRadius?.pr ?? 10.pr)),
               child: Row(
-                mainAxisSize: MainAxisSize.min,
+                mainAxisSize: widget.mainAxisSize,
+                mainAxisAlignment: widget.mainAxisAlignment,
                 children: [
                   // Displays Google logo using SVG
-                  SvgPicture.memory(_googleLogoSvgBytes, height: 20.pr, width: 20.pr),
+                  SvgPicture.memory(_googleLogoSvgBytes, height: 22.pr, width: 22.pr),
                   // Adds space between logo and text
                   Padding(
                     padding: ScaledEdgeInsets.only(left: 10),
                     child: Text(
                       'Pay with Google Pay',
-                      style: TextStyle(color: Colors.white, fontSize: 13.sp, fontWeight: FontWeight.w600, letterSpacing: 0.5.sp, wordSpacing: 1.sp),
+                      style: TextStyle(color: Colors.white, fontSize: 14.sp, fontWeight: FontWeight.w600, letterSpacing: 0.5.sp, wordSpacing: 1.sp),
                     ),
                   ),
                 ],
