@@ -24,7 +24,7 @@ Add the dependency in your `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  flutter_pay_buttons: ^0.0.2
+  flutter_pay_buttons: ^0.0.3
 ```
 
 Then, import it:
