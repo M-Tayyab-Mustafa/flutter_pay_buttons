@@ -6,8 +6,8 @@ repository: https://github.com/M-Tayyab-Mustafa/flutter_pay_buttons
 license: Apache-2.0
 
 environment:
-  sdk: ">=3.8.1 <4.0.0"
-  flutter: ">=1.17.0"
+  sdk: ">=3.8.1"
+  flutter: ">=3.22.0"
 
 dependencies:
   flutter:
@@ -18,7 +18,7 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: any # Add a version constraint
+  flutter_lints: ^6.0.0 # Add a version constraint (latest as of now)
 
 flutter:
   # If you use assets (e.g., local SVGs), declare them here

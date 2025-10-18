@@ -32,7 +32,9 @@ void main() {
               merchantId: 'merchant.flutter.test',
               merchantName: 'Test Merchant',
               amount: '10.00',
-              paymentItems: const [PaymentItem(label: 'Test Item', amount: '10.00')],
+              paymentItems: const [
+                PaymentItem(label: 'Test Item', amount: '10.00'),
+              ],
               onPaymentResult: (result) async {
                 // Simulated callback
                 debugPrint('onPaymentResult called');
@@ -48,7 +50,9 @@ void main() {
       expect(find.byType(GestureDetector), findsOneWidget);
     });
 
-    testWidgets('calls onPaymentResult when tapped (simulation)', (WidgetTester tester) async {
+    testWidgets('calls onPaymentResult when tapped (simulation)', (
+      WidgetTester tester,
+    ) async {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
@@ -56,7 +60,9 @@ void main() {
               merchantId: 'merchant.flutter.test',
               merchantName: 'Test Merchant',
               amount: '20.00',
-              paymentItems: const [PaymentItem(label: 'Test Item', amount: '20.00')],
+              paymentItems: const [
+                PaymentItem(label: 'Test Item', amount: '20.00'),
+              ],
               onPaymentResult: (result) async {
                 debugPrint('Simulated result: $result');
               },
