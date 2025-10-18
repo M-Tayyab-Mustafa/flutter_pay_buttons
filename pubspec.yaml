@@ -3,6 +3,7 @@ description:  A Flutter plugin to add Apple Pay support or Google Pay support vi
 version: 0.0.2
 homepage: https://github.com/M-Tayyab-Mustafa/flutter_pay_buttons/blob/main/lib/flutter_pay_buttons.dart
 repository: https://github.com/M-Tayyab-Mustafa/flutter_pay_buttons
+license: CECILL-2.1
 
 environment:
   sdk: ">=3.8.1 <4.0.0"
