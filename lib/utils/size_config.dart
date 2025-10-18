@@ -1,8 +1,16 @@
-/* SPDX-License-Identifier: CECILL-2.1
- * Copyright (c) 2024 M-Tayyab-Mustafa
- * Licensed under the CeCILL-2.1 License
- * See the LICENSE file for details.
- */
+/// Copyright 2024 M-Tayyab-Mustafa
+///
+/// Licensed under the Apache License, Version 2.0 (the "License");
+/// you may not use this file except in compliance with the License.
+/// You may obtain a copy of the License at
+///
+///     http://www.apache.org/licenses/LICENSE-2.0
+///
+/// Unless required by applicable law or agreed to in writing, software
+/// distributed under the License is distributed on an "AS IS" BASIS,
+/// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+/// See the License for the specific language governing permissions and
+/// limitations under the License.
 
 // part of the main flutter_pay_buttons.dart file (used for code organization)
 part of '../flutter_pay_buttons.dart';
@@ -26,10 +34,7 @@ class SizeConfig {
   static final mediaQuery = MediaQuery.of(_context);
 
   // The actual physical size of the device screen
-  static final Size _size = Size(
-    mediaQuery.size.width.ceilToDouble(),
-    mediaQuery.size.height.ceilToDouble(),
-  );
+  static final Size _size = Size(mediaQuery.size.width.ceilToDouble(), mediaQuery.size.height.ceilToDouble());
 
   // The default reference screen size (iPhone X dimensions)
   static final Size _logicalSize = Size(375, 812);
@@ -41,11 +46,7 @@ class SizeConfig {
   ///
   /// Optionally, you can specify custom base width and height
   /// for your design layout.
-  static void initialization(
-    BuildContext context, {
-    double? baseWidth,
-    double? baseHeight,
-  }) {
+  static void initialization(BuildContext context, {double? baseWidth, double? baseHeight}) {
     _context = context;
 
     // Calculate scale ratios for width and height
@@ -63,41 +64,23 @@ extension SizeConfigExtension on num {
   double get pr => this * SizeConfig._scale;
 
   /// Returns a scaled font size based on text scale and screen size
-  double get sp => MediaQuery.of(
-    SizeConfig._context,
-  ).textScaler.scale(this * SizeConfig._scale);
+  double get sp => MediaQuery.of(SizeConfig._context).textScaler.scale(this * SizeConfig._scale);
 }
 
 /// A helper class that creates [EdgeInsets] using scaled values
 /// (useful for responsive spacing and padding)
 class ScaledEdgeInsets extends EdgeInsets {
   /// Creates scaled padding using left, top, right, bottom values
-  ScaledEdgeInsets.fromLTRB(
-    double left,
-    double top,
-    double right,
-    double bottom,
-  ) : super.fromLTRB(left.pr, top.pr, right.pr, bottom.pr);
+  ScaledEdgeInsets.fromLTRB(double left, double top, double right, double bottom) : super.fromLTRB(left.pr, top.pr, right.pr, bottom.pr);
 
   /// Creates uniform scaled padding on all sides
   ScaledEdgeInsets.all(double value) : super.all(value.pr);
 
   /// Creates symmetric scaled padding (horizontal and vertical)
-  ScaledEdgeInsets.symmetric({double horizontal = 0, double vertical = 0})
-    : super.symmetric(horizontal: horizontal.pr, vertical: vertical.pr);
+  ScaledEdgeInsets.symmetric({double horizontal = 0, double vertical = 0}) : super.symmetric(horizontal: horizontal.pr, vertical: vertical.pr);
 
   /// Creates padding only for specific sides
-  ScaledEdgeInsets.only({
-    double left = 0,
-    double top = 0,
-    double right = 0,
-    double bottom = 0,
-  }) : super.only(
-         left: left.pr,
-         top: top.pr,
-         right: right.pr,
-         bottom: bottom.pr,
-       );
+  ScaledEdgeInsets.only({double left = 0, double top = 0, double right = 0, double bottom = 0}) : super.only(left: left.pr, top: top.pr, right: right.pr, bottom: bottom.pr);
 
   /// Returns zero padding (same as `EdgeInsets.zero`)
   static EdgeInsets get zero => EdgeInsets.zero;

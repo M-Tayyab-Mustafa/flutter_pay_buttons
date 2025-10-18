@@ -1,8 +1,16 @@
-/* SPDX-License-Identifier: CECILL-2.1
- * Copyright (c) 2024 M-Tayyab-Mustafa
- * Licensed under the CeCILL-2.1 License
- * See the LICENSE file for details.
- */
+/// Copyright 2024 M-Tayyab-Mustafa
+///
+/// Licensed under the Apache License, Version 2.0 (the "License");
+/// you may not use this file except in compliance with the License.
+/// You may obtain a copy of the License at
+///
+///     http://www.apache.org/licenses/LICENSE-2.0
+///
+/// Unless required by applicable law or agreed to in writing, software
+/// distributed under the License is distributed on an "AS IS" BASIS,
+/// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+/// See the License for the specific language governing permissions and
+/// limitations under the License.
 
 part of '../flutter_pay_buttons.dart';
 
@@ -91,10 +99,7 @@ class ApplePayButton extends StatefulWidget {
     this.mainAxisAlignment = MainAxisAlignment.start,
     this.child,
   }) : // Validation: ensure the button width is not too small
-       assert(
-         !(width != null && width < 220),
-         'Invalid width: width must be less than 220',
-       );
+       assert(!(width != null && width < 220), 'Invalid width: width must be less than 220');
 
   // ----------- UI CUSTOMIZATION PROPERTIES -----------
 
@@ -175,17 +180,12 @@ class _ApplePayButtonState extends State<ApplePayButton> {
         "data": {
           "merchantIdentifier": widget.merchantId,
           "displayName": widget.merchantName,
-          "merchantCapabilities":
-              widget.merchantCapabilities ?? ["3DS", "debit", "credit"],
-          "supportedNetworks":
-              widget.supportedNetworks ??
-              ["amex", "visa", "discover", "masterCard"],
+          "merchantCapabilities": widget.merchantCapabilities ?? ["3DS", "debit", "credit"],
+          "supportedNetworks": widget.supportedNetworks ?? ["amex", "visa", "discover", "masterCard"],
           "countryCode": widget.countryCode ?? "US",
           "currencyCode": widget.currencyCode ?? "USD",
-          "requiredBillingContactFields":
-              widget.requiredBillingContactFields ?? [],
-          "requiredShippingContactFields":
-              widget.requiredShippingContactFields ?? [],
+          "requiredBillingContactFields": widget.requiredBillingContactFields ?? [],
+          "requiredShippingContactFields": widget.requiredShippingContactFields ?? [],
         },
       }),
     ),
@@ -210,10 +210,7 @@ class _ApplePayButtonState extends State<ApplePayButton> {
         onTap: () async {
           try {
             // Display Apple Pay payment selector with provided items.
-            final result = await _pay.showPaymentSelector(
-              PayProvider.apple_pay,
-              widget.paymentItems,
-            );
+            final result = await _pay.showPaymentSelector(PayProvider.apple_pay, widget.paymentItems);
 
             // Send payment result back to the provided callback.
             return widget.onPaymentResult(result);
@@ -229,34 +226,19 @@ class _ApplePayButtonState extends State<ApplePayButton> {
               height: widget.height?.pr ?? _buttonSize.height.pr,
               width: widget.width?.pr ?? _buttonSize.width.pr,
               padding: ScaledEdgeInsets.symmetric(horizontal: 20),
-              decoration: BoxDecoration(
-                color: widget.backgroundColor ?? Colors.black,
-                borderRadius: BorderRadius.circular(
-                  widget.cornersRadius?.pr ?? 10.pr,
-                ),
-              ),
+              decoration: BoxDecoration(color: widget.backgroundColor ?? Colors.black, borderRadius: BorderRadius.circular(widget.cornersRadius?.pr ?? 10.pr)),
               child: Row(
                 mainAxisSize: widget.mainAxisSize,
                 mainAxisAlignment: widget.mainAxisAlignment,
                 children: [
                   // Displays Apple Pay logo as an SVG image.
-                  SvgPicture.memory(
-                    _appleLogoSvgBytes,
-                    height: 30.pr,
-                    width: 30.pr,
-                  ),
+                  SvgPicture.memory(_appleLogoSvgBytes, height: 30.pr, width: 30.pr),
                   // Adds space between logo and text.
                   Padding(
                     padding: ScaledEdgeInsets.only(left: 10),
                     child: Text(
                       'Pay with Apple Pay',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 14.sp,
-                        fontWeight: FontWeight.w600,
-                        letterSpacing: 0.5.sp,
-                        wordSpacing: 1.sp,
-                      ),
+                      style: TextStyle(color: Colors.white, fontSize: 14.sp, fontWeight: FontWeight.w600, letterSpacing: 0.5.sp, wordSpacing: 1.sp),
                     ),
                   ),
                 ],
