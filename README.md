@@ -24,7 +24,7 @@ Add the dependency in your `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  flutter_pay_buttons: ^0.0.3
+  flutter_pay_buttons: ^0.0.4
 ```
 
 Then, import it:
@@ -39,35 +39,95 @@ import 'package:flutter_pay_buttons/flutter_pay_buttons.dart';
 
 ```dart
 ApplePayButton(
-  merchantId: 'merchant.com.example',
-  merchantName: 'My Online Store',
+  merchantId: 'merchant.YOUR_MERCHANT_ID',
+  merchantName: 'Example Merchant',
   amount: '49.99',
   paymentItems: const [
-    PaymentItem(label: 'Total', amount: '49.99'),
+    PaymentItem(label: 'Product', amount: '49.99', status: PaymentItemStatus.final_price, type: PaymentItemType.item),
+    PaymentItem(label: 'Total', amount: '49.99', status: PaymentItemStatus.final_price),
   ],
   onPaymentResult: (result) {
     print('Payment result: $result');
   },
 )
 ```
+---
+
+## 🚀 Quick Start (Google Pay Example)
+
+```dart
+GooglePayButton(
+ totalPrice: '10.00',
+ merchantId: 'YOUR_MERCHANT_ID',
+ merchantName: 'Example Merchant',
+ publicKey: 'YOUR_PUBLIC_KEY_HERE',
+ tokenizationSpecificationType: TokenizationSpecificationType.direct,
+ isTesting: true,
+ paymentItems: [PaymentItem(label: 'Total', amount: '99.99', status: PaymentItemStatus.final_price)],
+ onPaymentResult: (result) {
+  debugPrint('Payment Result: $result');
+ },
+)
+```
 
 ---
 
-## ⚙️ Parameters
+## ⚙️ Parameters (Apple Pay)
 
 | Parameter | Type | Required | Description |
 |------------|------|-----------|-------------|
 | `merchantId` | `String` | ✅ | The Apple Pay merchant ID. |
-| `merchantName` | `String` | ✅ | The display name shown in Apple Pay sheet. |
-| `amount` | `String` | ✅ | The total payment amount. |
-| `paymentItems` | `List<PaymentItem>` | ✅ | Items displayed in the payment sheet. |
-| `onPaymentResult` | `Function(Map<String, dynamic>)` | ✅ | Callback triggered after payment result. |
+| `merchantName` | `String` | ✅ | The display name shown in the Apple Pay sheet. |
+| `amount` | `String` | ✅ | The total payment amount for the transaction. |
+| `paymentItems` | `List<PaymentItem>` | ✅ | List of payment items displayed in the Apple Pay sheet. |
+| `onPaymentResult` | `Function(Map<String, dynamic>)` | ✅ | Callback triggered after receiving the Apple Pay result. |
 | `height` | `double?` | ❌ | Custom height of the button. |
-| `width` | `double?` | ❌ | Custom width of the button. |
+| `width` | `double?` | ❌ | Custom width of the button (must be at least 220). |
 | `margin` | `EdgeInsets?` | ❌ | External padding around the button. |
-| `backgroundColor` | `Color?` | ❌ | Background color (default: black). |
-| `cornersRadius` | `double?` | ❌ | Corner radius of the button. |
-| `child` | `Widget?` | ❌ | Override the default child with custom content. |
+| `backgroundColor` | `Color?` | ❌ | Background color of the Apple Pay button. |
+| `cornersRadius` | `double?` | ❌ | Corner radius of the button for rounded edges. |
+| `merchantCapabilities` | `List<MerchantCapability>?` | ❌ | Supported merchant capabilities (e.g. `3DS`, `Credit`, `Debit`). |
+| `supportedNetworks` | `List<ApplePaySupportedNetwork>?` | ❌ | Supported card networks for Apple Pay (e.g. `visa`, `masterCard`). |
+| `countryCode` | `String?` | ❌ | The ISO country code (e.g. `US`, `PK`). |
+| `currencyCode` | `String?` | ❌ | The currency code used for the transaction (e.g. `USD`, `PKR`). |
+| `requiredBillingContactFields` | `List<ApplePayContactFields>?` | ❌ | Fields required for billing contact information. |
+| `requiredShippingContactFields` | `List<ApplePayContactFields>?` | ❌ | Fields required for shipping contact information. |
+| `mainAxisAlignment` | `MainAxisAlignment` | ❌ | Alignment of content inside the button row. |
+| `mainAxisSize` | `MainAxisSize` | ❌ | Layout size behavior of the button (default: `MainAxisSize.min`). |
+| `child` | `Widget?` | ❌ | Custom widget to replace the default Apple Pay button UI. |
+
+---
+
+## ⚙️ Parameters (Google Pay)
+
+| Parameter | Type | Required | Description |
+|------------|------|-----------|-------------|
+| `merchantId` | `String` | ✅ | The Google Pay merchant ID. |
+| `merchantName` | `String` | ✅ | The merchant name displayed in the payment sheet. |
+| `totalPrice` | `String` | ✅ | The total transaction amount. |
+| `paymentItems` | `List<PaymentItem>` | ✅ | List of payment items shown in the Google Pay sheet. |
+| `onPaymentResult` | `Function(Map<String, dynamic>)` | ✅ | Callback triggered when the payment result is received. |
+| `height` | `double?` | ❌ | Custom height of the button. |
+| `width` | `double?` | ❌ | Custom width of the button (must be at least 220). |
+| `margin` | `EdgeInsets?` | ❌ | External padding around the button. |
+| `backgroundColor` | `Color?` | ❌ | Background color of the button. |
+| `cornersRadius` | `double?` | ❌ | Corner radius for rounded edges. |
+| `isTesting` | `bool` | ❌ | Enable testing mode for Google Pay. |
+| `checkoutOption` | `CheckoutOption` | ❌ | Determines when payment is processed (e.g. `CheckoutOption.lazy`). |
+| `apiVersion` | `int?` | ❌ | Google Pay API version (optional). |
+| `apiVersionMinor` | `int?` | ❌ | Minor API version for Google Pay. |
+| `allowedCardNetworks` | `List<CardNetwork>?` | ❌ | List of supported card networks (e.g. VISA, MASTERCARD). |
+| `billingAddressRequired` | `bool` | ❌ | Whether billing address is required. |
+| `billingAddressFormat` | `BillingAddressFormat?` | ❌ | Format of the billing address (e.g. `FULL`, `MIN`). |
+| `phoneNumberRequired` | `bool` | ❌ | Whether phone number collection is required. |
+| `tokenizationSpecificationType` | `TokenizationSpecificationType` | ❌ | Defines how payment data is tokenized (`direct` or `paymentGateway`). |
+| `tokenizationSpecificationParameters` | `Map<String, dynamic>?` | ❌ | Parameters required when using `paymentGateway` tokenization. |
+| `publicKey` | `String?` | ❌ | Public key used for direct tokenization. |
+| `currencyCode` | `String?` | ❌ | Currency code (e.g. `USD`, `PKR`). |
+| `transactionInfoStatus` | `TransactionInfoStatus?` | ❌ | Status type for the transaction (e.g. `FINAL`, `ESTIMATED`). |
+| `child` | `Widget?` | ❌ | Custom child widget to override the default button content. |
+| `mainAxisAlignment` | `MainAxisAlignment` | ❌ | Alignment of content inside the button row. |
+| `mainAxisSize` | `MainAxisSize` | ❌ | Layout size behavior of the button (default: `MainAxisSize.min`). |
 
 ---
 
