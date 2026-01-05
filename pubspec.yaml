@@ -12,8 +12,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  flutter_svg: ^2.2.1 # Add a version constraint (latest as of now)
-  pay: ^3.2.1 # Add a version constraint (adjust based on compatibility)
+  flutter_svg: ^2.2.3 # Add a version constraint (latest as of now)
+  pay: ^3.3.0 # Add a version constraint (adjust based on compatibility)
 
 dev_dependencies:
   flutter_test:

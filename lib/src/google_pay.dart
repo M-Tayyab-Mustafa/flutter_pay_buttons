@@ -132,7 +132,7 @@ class GooglePayButton extends StatefulWidget {
   final double? width;
 
   /// External margin around the button.
-  final ScaledEdgeInsets? margin;
+  final EdgeInsets? margin;
 
   /// Background color of the button.
   final Color? backgroundColor;
@@ -298,12 +298,9 @@ class _GooglePayButtonState extends State<GooglePayButton> {
 
   @override
   Widget build(BuildContext context) {
-    // Initialize responsive sizing configuration.
-    SizeConfig.initialization(context);
-
     return Padding(
       // Adds margin (spacing) around the button.
-      padding: widget.margin ?? ScaledEdgeInsets.symmetric(horizontal: 16),
+      padding: widget.margin ?? EdgeInsets.symmetric(horizontal: 16),
       child: GestureDetector(
         // Detects taps on the button.
         onTap: () async {
@@ -339,36 +336,30 @@ class _GooglePayButtonState extends State<GooglePayButton> {
             widget.child ??
             // Default Google Pay button UI.
             Container(
-              height: widget.height?.pr ?? _buttonSize.height.pr,
-              width: widget.width?.pr ?? _buttonSize.width.pr,
-              padding: ScaledEdgeInsets.symmetric(horizontal: 20),
+              height: widget.height ?? _buttonSize.height,
+              width: widget.width ?? _buttonSize.width,
+              padding: EdgeInsets.symmetric(horizontal: 20),
               decoration: BoxDecoration(
                 color: widget.backgroundColor ?? Colors.black,
-                borderRadius: BorderRadius.circular(
-                  widget.cornersRadius?.pr ?? 10.pr,
-                ),
+                borderRadius: BorderRadius.circular(widget.cornersRadius ?? 10),
               ),
               child: Row(
                 mainAxisSize: widget.mainAxisSize,
                 mainAxisAlignment: widget.mainAxisAlignment,
                 children: [
                   // Display Google Pay logo (SVG).
-                  SvgPicture.memory(
-                    _googleLogoSvgBytes,
-                    height: 22.pr,
-                    width: 22.pr,
-                  ),
+                  SvgPicture.memory(_googleLogoSvgBytes, height: 22, width: 22),
                   // Space between logo and text.
                   Padding(
-                    padding: ScaledEdgeInsets.only(left: 10),
+                    padding: EdgeInsets.only(left: 10),
                     child: Text(
                       'Pay with Google Pay',
                       style: TextStyle(
                         color: Colors.white,
-                        fontSize: 14.sp,
+                        fontSize: 14,
                         fontWeight: FontWeight.w600,
-                        letterSpacing: 0.5.sp,
-                        wordSpacing: 1.sp,
+                        letterSpacing: 0.5,
+                        wordSpacing: 1,
                       ),
                     ),
                   ),
