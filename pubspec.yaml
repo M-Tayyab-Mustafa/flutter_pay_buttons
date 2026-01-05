@@ -1,24 +1,24 @@
 name: flutter_pay_buttons
 description:  A Flutter plugin to add Apple Pay support or Google Pay support via the pay package, with a custom widgets.
-version: 0.0.4
+version: 0.0.5
 homepage: https://github.com/M-Tayyab-Mustafa/flutter_pay_buttons/blob/main/lib/flutter_pay_buttons.dart
 repository: https://github.com/M-Tayyab-Mustafa/flutter_pay_buttons
 license: Apache-2.0
 
 environment:
-  sdk: ">=3.8.1 <4.0.0"
-  flutter: ">=1.17.0"
+  sdk: ">=3.8.1"
+  flutter: ">=3.22.0"
 
 dependencies:
   flutter:
     sdk: flutter
-  flutter_svg: ^2.2.1 # Add a version constraint (latest as of now)
-  pay: ^3.2.1 # Add a version constraint (adjust based on compatibility)
+  flutter_svg: ^2.2.3 # Add a version constraint (latest as of now)
+  pay: ^3.3.0 # Add a version constraint (adjust based on compatibility)
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: any # Add a version constraint
+  flutter_lints: ^6.0.0 # Add a version constraint (latest as of now)
 
 flutter:
   # If you use assets (e.g., local SVGs), declare them here

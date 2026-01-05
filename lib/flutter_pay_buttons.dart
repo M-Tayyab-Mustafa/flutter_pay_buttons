@@ -41,7 +41,6 @@ import 'package:pay/pay.dart';
 export 'package:pay/pay.dart' hide ApplePayButton;
 
 part 'utils/enums.dart';
-part 'utils/size_config.dart';
 // Link to the internal implementations
 part 'src/apple_pay.dart';
 part 'src/google_pay.dart';

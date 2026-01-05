@@ -112,11 +112,16 @@ class GooglePayButton extends StatefulWidget {
     required this.merchantName,
   }) : // Validation: if using payment gateway, parameters must be provided
        assert(
-         !(tokenizationSpecificationType == TokenizationSpecificationType.paymentGateway && tokenizationSpecificationParameters == null),
+         !(tokenizationSpecificationType ==
+                 TokenizationSpecificationType.paymentGateway &&
+             tokenizationSpecificationParameters == null),
          'Invalid tokenization specification: tokenizationSpecificationParameters are required when type is set to paymentGateway',
        ),
        // Validation: ensure the width is at least 220
-       assert(!(width != null && width < 220), 'Invalid width: width must be less than 220');
+       assert(
+         !(width != null && width < 220),
+         'Invalid width: width must be less than 220',
+       );
 
   // ----------- UI CUSTOMIZATION PARAMETERS -----------
 
@@ -127,7 +132,7 @@ class GooglePayButton extends StatefulWidget {
   final double? width;
 
   /// External margin around the button.
-  final ScaledEdgeInsets? margin;
+  final EdgeInsets? margin;
 
   /// Background color of the button.
   final Color? backgroundColor;
@@ -222,16 +227,32 @@ class _GooglePayButtonState extends State<GooglePayButton> {
               "type": "CARD",
               "parameters": {
                 "allowedAuthMethods": ["PAN_ONLY", "CRYPTOGRAM_3DS"],
-                "allowedCardNetworks": widget.allowedCardNetworks ?? ["MASTERCARD", "VISA", "AMEX", "DISCOVER", "INTERAC", "JCB"],
+                "allowedCardNetworks":
+                    widget.allowedCardNetworks ??
+                    [
+                      "MASTERCARD",
+                      "VISA",
+                      "AMEX",
+                      "DISCOVER",
+                      "INTERAC",
+                      "JCB",
+                    ],
                 "assuranceDetailsRequired": true,
                 "billingAddressRequired": widget.billingAddressRequired,
-                "billingAddressParameters": {"format": widget.billingAddressFormat ?? "FULL", "phoneNumberRequired": widget.phoneNumberRequired},
+                "billingAddressParameters": {
+                  "format": widget.billingAddressFormat ?? "FULL",
+                  "phoneNumberRequired": widget.phoneNumberRequired,
+                },
               },
               "tokenizationSpecification": {
                 "type": widget.tokenizationSpecificationType.value,
                 "parameters": switch (widget.tokenizationSpecificationType) {
-                  TokenizationSpecificationType.paymentGateway => widget.tokenizationSpecificationParameters!,
-                  TokenizationSpecificationType.direct => {"protocolVersion": "ECv2", "publicKey": widget.publicKey},
+                  TokenizationSpecificationType.paymentGateway =>
+                    widget.tokenizationSpecificationParameters!,
+                  TokenizationSpecificationType.direct => {
+                    "protocolVersion": "ECv2",
+                    "publicKey": widget.publicKey,
+                  },
                 },
               },
             },
@@ -239,11 +260,16 @@ class _GooglePayButtonState extends State<GooglePayButton> {
           "transactionInfo": {
             "currencyCode": widget.currencyCode ?? "USD",
             "countryCode": widget.currencyCode?.substring(0, 2) ?? "US",
-            "totalPriceStatus": widget.transactionInfoStatus?.value ?? TransactionInfoStatus.statusFinal.value,
+            "totalPriceStatus":
+                widget.transactionInfoStatus?.value ??
+                TransactionInfoStatus.statusFinal.value,
             "totalPrice": widget.totalPrice,
             "checkoutOption": widget.checkoutOption.value,
           },
-          "merchantInfo": {"merchantId": widget.merchantId, "merchantName": widget.merchantName},
+          "merchantInfo": {
+            "merchantId": widget.merchantId,
+            "merchantName": widget.merchantName,
+          },
         },
       }),
     ),
@@ -256,7 +282,9 @@ class _GooglePayButtonState extends State<GooglePayButton> {
   Size get _buttonSize => Size(220, 40);
 
   /// Event channel for receiving payment results from native platform (Android/iOS).
-  static const _eventChannel = EventChannel('plugins.flutter.io/pay/payment_result');
+  static const _eventChannel = EventChannel(
+    'plugins.flutter.io/pay/payment_result',
+  );
 
   /// Subscription to listen for payment results.
   StreamSubscription<Map<String, dynamic>>? _paymentResultSubscription;
@@ -270,12 +298,9 @@ class _GooglePayButtonState extends State<GooglePayButton> {
 
   @override
   Widget build(BuildContext context) {
-    // Initialize responsive sizing configuration.
-    SizeConfig.initialization(context);
-
     return Padding(
       // Adds margin (spacing) around the button.
-      padding: widget.margin ?? ScaledEdgeInsets.symmetric(horizontal: 16),
+      padding: widget.margin ?? EdgeInsets.symmetric(horizontal: 16),
       child: GestureDetector(
         // Detects taps on the button.
         onTap: () async {
@@ -286,15 +311,22 @@ class _GooglePayButtonState extends State<GooglePayButton> {
             // Start listening for payment result events.
             _paymentResultSubscription = _eventChannel
                 .receiveBroadcastStream()
-                .map((result) => jsonDecode(result as String) as Map<String, dynamic>)
+                .map(
+                  (result) =>
+                      jsonDecode(result as String) as Map<String, dynamic>,
+                )
                 .listen(
                   // Pass payment result to callback.
                   (result) => widget.onPaymentResult(result),
-                  onError: (error) => debugPrint('\x1B[31m [Google Pay] Error: $error \x1B[0m'),
+                  onError: (error) =>
+                      debugPrint('\x1B[31m [Google Pay] Error: $error \x1B[0m'),
                 );
 
             // Launch Google Pay payment sheet with provided payment items.
-            await _pay.showPaymentSelector(PayProvider.google_pay, widget.paymentItems);
+            await _pay.showPaymentSelector(
+              PayProvider.google_pay,
+              widget.paymentItems,
+            );
           } catch (e) {
             // Handle and log any errors gracefully.
             debugPrint('\x1B[31m [Google Pay] Error: $e \x1B[0m');
@@ -304,22 +336,31 @@ class _GooglePayButtonState extends State<GooglePayButton> {
             widget.child ??
             // Default Google Pay button UI.
             Container(
-              height: widget.height?.pr ?? _buttonSize.height.pr,
-              width: widget.width?.pr ?? _buttonSize.width.pr,
-              padding: ScaledEdgeInsets.symmetric(horizontal: 20),
-              decoration: BoxDecoration(color: widget.backgroundColor ?? Colors.black, borderRadius: BorderRadius.circular(widget.cornersRadius?.pr ?? 10.pr)),
+              height: widget.height ?? _buttonSize.height,
+              width: widget.width ?? _buttonSize.width,
+              padding: EdgeInsets.symmetric(horizontal: 20),
+              decoration: BoxDecoration(
+                color: widget.backgroundColor ?? Colors.black,
+                borderRadius: BorderRadius.circular(widget.cornersRadius ?? 10),
+              ),
               child: Row(
                 mainAxisSize: widget.mainAxisSize,
                 mainAxisAlignment: widget.mainAxisAlignment,
                 children: [
                   // Display Google Pay logo (SVG).
-                  SvgPicture.memory(_googleLogoSvgBytes, height: 22.pr, width: 22.pr),
+                  SvgPicture.memory(_googleLogoSvgBytes, height: 22, width: 22),
                   // Space between logo and text.
                   Padding(
-                    padding: ScaledEdgeInsets.only(left: 10),
+                    padding: EdgeInsets.only(left: 10),
                     child: Text(
                       'Pay with Google Pay',
-                      style: TextStyle(color: Colors.white, fontSize: 14.sp, fontWeight: FontWeight.w600, letterSpacing: 0.5.sp, wordSpacing: 1.sp),
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 14,
+                        fontWeight: FontWeight.w600,
+                        letterSpacing: 0.5,
+                        wordSpacing: 1,
+                      ),
                     ),
                   ),
                 ],
